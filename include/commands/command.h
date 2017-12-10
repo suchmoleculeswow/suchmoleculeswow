@@ -2,6 +2,13 @@
 #define COMMAND_H
 
 namespace commands {
+/*!
+    \class Command
+    \brief Provides a compile time interface for commands used in the
+   DataController.
+
+    Makes use of CRTP.
+*/
 template <class C>
 struct Command {
   static float invoke(float first, float second) {

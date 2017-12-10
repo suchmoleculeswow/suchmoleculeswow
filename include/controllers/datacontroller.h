@@ -14,6 +14,19 @@ class DataModel;
 }
 
 namespace controllers {
+/*!
+    \class DataController
+    \brief Provides an interface to handle async operations on the data model.
+
+    It makes use of Qt's QtConcurrent library to execute commands
+   asynchronously.
+    Since no callbacks are provided you need to use Qt's slots functionality to
+   connect
+    to the provided results_available signal.
+
+    \todo Currently there's a hack implemented to slow down the emitting signal.
+    Ideally a decorator would be provided for the method or the class.
+*/
 class DataController : public QObject {
   Q_OBJECT
  public:

@@ -1,7 +1,10 @@
 #include <commands/command.h>
 
 namespace commands {
-
+/*!
+    \class Add
+    \brief Add command for a reduce-like worker.
+*/
 struct Add {
   static float invoke(float first, float second) { return first + second; }
 

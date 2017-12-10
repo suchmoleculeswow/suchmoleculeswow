@@ -1,4 +1,11 @@
 #include <QApplication>
+
+#include <memory>
+
+#include "datacontroller.h"
+#include "dataloader.h"
+#include "datamodel.h"
+#include "loaderfactory.h"
 #include "mainwindow.h"
 
 #ifdef ENABLE_SUCH_WOW_TESTS
@@ -7,10 +14,18 @@
 bool init_function() { return true; }
 #endif
 
+static const std::string DATA_PATH{"numbers.csv"};
+
 int main(int argc, char *argv[]) {
 #ifndef ENABLE_SUCH_WOW_TESTS
+
+  std::unique_ptr<DataLoader> loader =
+      LoaderFactory::get_loader(LoaderFactory::Backend::CSV);
+  std::unique_ptr<DataModel> data_model = loader->load(DATA_PATH);
+  DataController data_controller(std::move(data_model));
+
   QApplication a(argc, argv);
-  MainWindow w;
+  MainWindow w(data_controller);
   w.show();
 
   return a.exec();

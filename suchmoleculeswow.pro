@@ -26,13 +26,16 @@ SOURCES += main.cpp\
     csvloader.cpp \
     loaderfactory.cpp \
     csvloader_test.cpp \
-    loaderfactory_test.cpp
+    loaderfactory_test.cpp \
+    datacontroller.cpp \
+    datacontroller.inl
 
 HEADERS  += mainwindow.h \
     datamodel.h \
     dataloader.h \
     csvloader.h \
-    loaderfactory.h
+    loaderfactory.h \
+    datacontroller.h
 
 FORMS    += mainwindow.ui
 

@@ -19,6 +19,8 @@
 */
 class DataModel : public boost::noncopyable {
  public:
+  typedef std::vector<float>::const_iterator DataCIt;
+
   DataModel(const std::vector<float>& raw_data, const uint32_t rows,
             const uint32_t cols);
   DataModel(const std::vector<float>&& raw_data, const uint32_t rows,
@@ -29,6 +31,9 @@ class DataModel : public boost::noncopyable {
   size_t size() const;
 
   float at(const uint32_t row, const uint32_t col) const;
+
+  DataCIt cbegin() const;
+  DataCIt cend() const;
 
   friend std::ostream& operator<<(std::ostream& os,
                                   const DataModel& data_model);

@@ -27,6 +27,12 @@ float DataModel::at(const uint32_t row, const uint32_t col) const {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+DataModel::DataCIt DataModel::cbegin() const { return raw_data_.cbegin(); }
+
+///////////////////////////////////////////////////////////////////////////////
+DataModel::DataCIt DataModel::cend() const { return raw_data_.cend(); }
+
+///////////////////////////////////////////////////////////////////////////////
 std::ostream& operator<<(std::ostream& os, const DataModel& data_model) {
   const uint32_t rows = data_model.rows();
   const uint32_t cols = data_model.cols();

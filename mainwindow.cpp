@@ -1,11 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "datacontroller.h"
+
 ///////////////////////////////////////////////////////////////////////////////
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(DataController& data_controller, QWidget* parent)
+    : QMainWindow{parent},
+      ui{new Ui::MainWindow},
+      data_controller_{data_controller} {
   ui->setupUi(this);
   setup_connections();
+  setup_sliders();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -15,13 +20,20 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::on_lowerBoundSlider_changed(int value) {
   ui->lowerBoundCurVal->setText(QString::number(value));
 
-  /// TODO: get max value from some data controller.
-  update_lower_bound_range(value, 100);
+  update_lower_bound_range(value, data_controller_.size());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_upperBoundSlider_changed(int value) {
   ui->upperBoundCurVal->setText(QString::number(value));
+
+  auto func = [](float first, float second) -> float { return first + second; };
+  data_controller_.reduce_range(ui->lowerBoundSlider->value(), value, 0, func);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_result_available(float result) {
+  ui->resultValueLabel->setText(QString::number(result));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -30,6 +42,17 @@ void MainWindow::setup_connections() {
           &MainWindow::on_lowerBoundSlider_changed);
   connect(ui->upperBoundSlider, &QSlider::valueChanged, this,
           &MainWindow::on_upperBoundSlider_changed);
+  connect(&data_controller_, &DataController::result_available, this,
+          &MainWindow::on_result_available);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+void MainWindow::setup_sliders() {
+  ui->lowerBoundMaxVal->setText(QString::number(data_controller_.size()));
+  ui->lowerBoundSlider->setMaximum(data_controller_.size());
+
+  ui->upperBoundMaxVal->setText(QString::number(data_controller_.size()));
+  ui->upperBoundSlider->setMaximum(data_controller_.size());
 }
 
 ///////////////////////////////////////////////////////////////////////////////

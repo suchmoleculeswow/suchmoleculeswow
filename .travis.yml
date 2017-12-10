@@ -1,20 +1,25 @@
-language: cpp
+dist: trusty
+sudo: required
+language:
+  - cpp
 compiler:
-  - g++
+  - gcc
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - boost-latest
     packages:
-      - gcc-4.9
-      - g++-4.9
-      - libboost1.55-all-dev
-      - cmake
-install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9"; fi
-  - sudo apt-get install -y qt5-default qttools5-dev-tools
-
+      - gcc-6
+      - g++-6
+      - libboost-all-dev
+      - qt5-default 
+      - qttools5-dev-tools
 script:
+  # Link gcc-6 and g++-6 to their standard commands
+  - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  # Export CC and CXX to tell cmake which compiler to use
+  - export CC=/usr/bin/gcc-6
+  - export CXX=/usr/bin/g++-6
   - qmake
   - make

@@ -1,5 +1,7 @@
 #include <loaders/loaderfactory.h>
 
+#include <boost/log/trivial.hpp>
+
 #include <loaders/dataloader.h>
 
 #include "csvloader.h"
@@ -14,6 +16,7 @@ std::unique_ptr<DataLoader> LoaderFactory::get_loader(
       break;
     case Backend::XML:
     default:
+      BOOST_LOG_TRIVIAL(warning) << "Selected loader backend is not available.";
       return nullptr;
   }
 }

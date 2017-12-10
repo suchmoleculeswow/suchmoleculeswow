@@ -14,9 +14,6 @@ int main(int argc, char *argv[]) {
   w.show();
 
   return a.exec();
-
-  return 0;
-
 #else
   return ::boost::unit_test::unit_test_main(&init_function, argc, argv);
 #endif

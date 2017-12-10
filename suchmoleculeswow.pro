@@ -37,6 +37,9 @@ SOURCES += \
     test/loaderfactory_test.cpp
 
 HEADERS  += \
+    # commands
+    include/commands/add.h \
+    include/commands/command.h \
     # controllers
     include/controllers/datacontroller.h \
     include/controllers/datacontroller.inl \

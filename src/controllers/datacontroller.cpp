@@ -1,6 +1,7 @@
 #include <controllers/datacontroller.h>
 
-#include <algorithm>
+#include <chrono>
+#include <thread>
 
 #include <models/datamodel.h>
 
@@ -11,7 +12,10 @@ DataController::DataController(std::unique_ptr<models::DataModel> data_model,
     : QObject(parent),
       data_model_{std::move(data_model)},
       result_watcher_{},
-      result_{} {}
+      result_{},
+      sleep_milliseconds_(200) {
+  setup_connections();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 size_t DataController::size() const { return data_model_->size(); }
@@ -27,6 +31,7 @@ void DataController::setup_connections() {
 
 ///////////////////////////////////////////////////////////////////////////////
 void DataController::on_watcher_result_ready() {
+  std::this_thread::sleep_for(std::chrono::milliseconds(sleep_milliseconds_));
   emit result_available(result_.result());
 }
 }

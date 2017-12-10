@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <commands/add.h>
 #include <controllers/datacontroller.h>
 
 namespace gui {
@@ -29,8 +30,8 @@ void MainWindow::on_lowerBoundSlider_changed(int value) {
 void MainWindow::on_upperBoundSlider_changed(int value) {
   ui->upperBoundCurVal->setText(QString::number(value));
 
-  auto func = [](float first, float second) -> float { return first + second; };
-  data_controller_.reduce_range(ui->lowerBoundSlider->value(), value, 0, func);
+  data_controller_.reduce_range<commands::Add>(ui->lowerBoundSlider->value(),
+                                               value);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -7,6 +7,8 @@
 #include <QFutureWatcher>
 #include <QObject>
 
+#include <commands/command.h>
+
 namespace models {
 class DataModel;
 }
@@ -18,14 +20,16 @@ class DataController : public QObject {
   DataController(std::unique_ptr<models::DataModel> data_model,
                  QObject* parent = 0);
 
-  template <typename Func>
-  void reduce_range(int first, int last, float init, Func f);
+  template <typename Command>
+  void reduce_range(int first, int last);
 
   size_t size() const;
 
   ~DataController();
 
  signals:
+  /// This signal is delayed by sleep_milliseconds.
+  /// A better way to do it would have been to wrap this object in a decorator.
   void result_available(float result);
 
  private:
@@ -36,6 +40,7 @@ class DataController : public QObject {
 
   QFutureWatcher<void> result_watcher_;
   QFuture<float> result_;
+  const int sleep_milliseconds_;
 };
 }
 

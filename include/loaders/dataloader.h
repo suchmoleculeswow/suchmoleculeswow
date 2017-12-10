@@ -14,8 +14,6 @@ class DataModel;
 namespace loaders {
 class DataLoader {
  public:
-  DataLoader() = default;
-
   virtual std::unique_ptr<models::DataModel> load(const std::string& path) = 0;
   virtual ~DataLoader() = 0;
 };

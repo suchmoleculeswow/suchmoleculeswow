@@ -2,6 +2,9 @@
 
 #include <memory>
 
+#include <boost/filesystem.hpp>
+#include <boost/log/trivial.hpp>
+
 #include <controllers/datacontroller.h>
 #include <loaders/dataloader.h>
 #include <loaders/loaderfactory.h>
@@ -18,14 +21,22 @@
 bool init_function() { return true; }
 #endif
 
-static const std::string DATA_PATH{"numbers.csv"};
+const std::string NUMBERS_PATH{"/data/numbers.csv"};
 
 int main(int argc, char *argv[]) {
 #ifndef ENABLE_SUCH_WOW_TESTS
 
+  boost::filesystem::path p(DATA_PATH);
+  p.append(NUMBERS_PATH);
+  if (!boost::filesystem::exists(p)) {
+    BOOST_LOG_TRIVIAL(fatal)
+        << "numbers.csv is not in the current working dir.";
+    return -1;
+  }
+
   std::unique_ptr<loaders::DataLoader> loader =
       loaders::LoaderFactory::get_loader(loaders::LoaderFactory::Backend::CSV);
-  std::unique_ptr<models::DataModel> data_model = loader->load(DATA_PATH);
+  std::unique_ptr<models::DataModel> data_model = loader->load(p.string());
   controllers::DataController data_controller(std::move(data_model));
 
   QApplication a(argc, argv);

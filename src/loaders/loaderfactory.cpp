@@ -1,7 +1,10 @@
-#include "loaderfactory.h"
+#include <loaders/loaderfactory.h>
+
+#include <loaders/dataloader.h>
 
 #include "csvloader.h"
 
+namespace loaders {
 ///////////////////////////////////////////////////////////////////////////////
 std::unique_ptr<DataLoader> LoaderFactory::get_loader(
     const LoaderFactory::Backend backend) {
@@ -13,4 +16,5 @@ std::unique_ptr<DataLoader> LoaderFactory::get_loader(
     default:
       return nullptr;
   }
+}
 }

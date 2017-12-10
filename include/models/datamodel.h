@@ -17,6 +17,7 @@
     \todo ideally replaced with something like eigen, or at least the underlying
    data type should be a template
 */
+namespace models {
 class DataModel : public boost::noncopyable {
  public:
   typedef std::vector<float>::const_iterator DataCIt;
@@ -43,5 +44,6 @@ class DataModel : public boost::noncopyable {
   const uint32_t rows_;
   const uint32_t cols_;
 };
+}
 
 #endif  // DATAMODEL_H

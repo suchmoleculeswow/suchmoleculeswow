@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "datacontroller.h"
+#include <controllers/datacontroller.h>
 
+namespace gui {
 ///////////////////////////////////////////////////////////////////////////////
-MainWindow::MainWindow(DataController& data_controller, QWidget* parent)
+MainWindow::MainWindow(controllers::DataController& data_controller,
+                       QWidget* parent)
     : QMainWindow{parent},
       ui{new Ui::MainWindow},
       data_controller_{data_controller} {
@@ -42,8 +44,8 @@ void MainWindow::setup_connections() {
           &MainWindow::on_lowerBoundSlider_changed);
   connect(ui->upperBoundSlider, &QSlider::valueChanged, this,
           &MainWindow::on_upperBoundSlider_changed);
-  connect(&data_controller_, &DataController::result_available, this,
-          &MainWindow::on_result_available);
+  connect(&data_controller_, &controllers::DataController::result_available,
+          this, &MainWindow::on_result_available);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,4 +61,5 @@ void MainWindow::setup_sliders() {
 void MainWindow::update_lower_bound_range(int first, int last) {
   ui->upperBoundSlider->setRange(first, last);
   ui->upperBoundMinVal->setText(QString::number(first));
+}
 }

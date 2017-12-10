@@ -3,14 +3,15 @@
 
 #include <memory>
 
-class DataLoader;
-
 /*!
     \class LoaderFactory
     \brief Provide support for creating multiple loaders.
 
     Currently only CSV is supported.
 */
+namespace loaders {
+class DataLoader;
+
 class LoaderFactory {
  public:
   enum class Backend {
@@ -20,5 +21,6 @@ class LoaderFactory {
 
   static std::unique_ptr<DataLoader> get_loader(const Backend backend);
 };
+}
 
 #endif  // LOADERFACTORY_H

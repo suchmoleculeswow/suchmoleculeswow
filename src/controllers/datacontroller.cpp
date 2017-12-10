@@ -1,11 +1,12 @@
-#include "datacontroller.h"
+#include <controllers/datacontroller.h>
 
 #include <algorithm>
 
-#include "datamodel.h"
+#include <models/datamodel.h>
 
+namespace controllers {
 ///////////////////////////////////////////////////////////////////////////////
-DataController::DataController(std::unique_ptr<DataModel> data_model,
+DataController::DataController(std::unique_ptr<models::DataModel> data_model,
                                QObject* parent)
     : QObject(parent),
       data_model_{std::move(data_model)},
@@ -27,4 +28,5 @@ void DataController::setup_connections() {
 ///////////////////////////////////////////////////////////////////////////////
 void DataController::on_watcher_result_ready() {
   emit result_available(result_.result());
+}
 }

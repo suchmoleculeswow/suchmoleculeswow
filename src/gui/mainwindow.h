@@ -3,17 +3,21 @@
 
 #include <QMainWindow>
 
+namespace controllers {
+class DataController;
+}
+
+namespace gui {
 namespace Ui {
 class MainWindow;
 }
-
-class DataController;
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
  public:
-  explicit MainWindow(DataController& data_controller, QWidget* parent = 0);
+  explicit MainWindow(controllers::DataController& data_controller,
+                      QWidget* parent = 0);
   ~MainWindow();
 
  public slots:
@@ -27,7 +31,8 @@ class MainWindow : public QMainWindow {
   void update_lower_bound_range(int first, int last);
 
   Ui::MainWindow* ui;
-  DataController& data_controller_;
+  controllers::DataController& data_controller_;
 };
+}
 
 #endif  // MAINWINDOW_H

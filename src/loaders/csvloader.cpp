@@ -7,8 +7,9 @@
 #include <boost/log/trivial.hpp>
 #include <boost/tokenizer.hpp>
 
-#include "datamodel.h"
+#include <models/datamodel.h>
 
+namespace {
 ///////////////////////////////////////////////////////////////////////////////
 typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
 bool parse_csv(const boost::filesystem::path& path,
@@ -30,9 +31,11 @@ bool parse_csv(const boost::filesystem::path& path,
 
   return true;
 }
+}
 
+namespace loaders {
 ///////////////////////////////////////////////////////////////////////////////
-std::unique_ptr<DataModel> CSVLoader::load(const std::string& path) {
+std::unique_ptr<models::DataModel> CSVLoader::load(const std::string& path) {
   std::vector<float> raw_values;
   uint32_t rows = 0;
   uint32_t cols = 0;
@@ -41,16 +44,19 @@ std::unique_ptr<DataModel> CSVLoader::load(const std::string& path) {
 
   if (!boost::filesystem::exists(p)) {
     BOOST_LOG_TRIVIAL(error) << "Path does not exist.";
-    return std::make_unique<DataModel>(std::move(raw_values), rows, cols);
+    return std::make_unique<models::DataModel>(std::move(raw_values), rows,
+                                               cols);
   }
 
-  if (!parse_csv(path, raw_values, rows, cols)) {
+  if (!::parse_csv(path, raw_values, rows, cols)) {
     BOOST_LOG_TRIVIAL(error) << "Could not parse CSV file.";
-    return std::make_unique<DataModel>(std::move(raw_values), rows, cols);
+    return std::make_unique<models::DataModel>(std::move(raw_values), rows,
+                                               cols);
   }
 
-  return std::make_unique<DataModel>(std::move(raw_values), rows, cols);
+  return std::make_unique<models::DataModel>(std::move(raw_values), rows, cols);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 CSVLoader::~CSVLoader() {}
+}

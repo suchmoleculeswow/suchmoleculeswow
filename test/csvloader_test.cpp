@@ -1,6 +1,6 @@
-#include "csvloader.h"
-#include "datamodel.h"
-#include "loaderfactory.h"
+#include "src/loaders/csvloader.h"
+#include <loaders/loaderfactory.h>
+#include <models/datamodel.h>
 
 #include <fstream>
 
@@ -44,24 +44,24 @@ struct CSVCreatorInvalid {
 
 ///////////////////////////////////////////////////////////////////////////////
 BOOST_AUTO_TEST_CASE(PathDoesNotExistTest) {
-  std::unique_ptr<DataLoader> loader =
-      LoaderFactory::get_loader(LoaderFactory::Backend::CSV);
-  std::unique_ptr<DataModel> data_model = loader->load("suchfile.wow");
+  std::unique_ptr<loaders::DataLoader> loader =
+      loaders::LoaderFactory::get_loader(loaders::LoaderFactory::Backend::CSV);
+  std::unique_ptr<models::DataModel> data_model = loader->load("suchfile.wow");
   BOOST_CHECK_EQUAL(data_model->size(), 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 BOOST_FIXTURE_TEST_CASE(InvalidParseTest, CSVCreatorInvalid) {
-  std::unique_ptr<DataLoader> loader =
-      LoaderFactory::get_loader(LoaderFactory::Backend::CSV);
+  std::unique_ptr<loaders::DataLoader> loader =
+      loaders::LoaderFactory::get_loader(loaders::LoaderFactory::Backend::CSV);
   BOOST_CHECK_THROW(loader->load(path_), std::invalid_argument);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 BOOST_FIXTURE_TEST_CASE(ValidParseTest, CSVCreatorValid) {
-  std::unique_ptr<DataLoader> loader =
-      LoaderFactory::get_loader(LoaderFactory::Backend::CSV);
-  std::unique_ptr<DataModel> data_model = loader->load(path_);
+  std::unique_ptr<loaders::DataLoader> loader =
+      loaders::LoaderFactory::get_loader(loaders::LoaderFactory::Backend::CSV);
+  std::unique_ptr<models::DataModel> data_model = loader->load(path_);
 
   BOOST_CHECK_EQUAL(data_model->rows(), 2);
   BOOST_CHECK_EQUAL(data_model->cols(), 2);

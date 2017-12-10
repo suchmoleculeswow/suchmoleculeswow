@@ -7,12 +7,16 @@
 #include <QFutureWatcher>
 #include <QObject>
 
+namespace models {
 class DataModel;
+}
 
+namespace controllers {
 class DataController : public QObject {
   Q_OBJECT
  public:
-  DataController(std::unique_ptr<DataModel> data_model, QObject* parent = 0);
+  DataController(std::unique_ptr<models::DataModel> data_model,
+                 QObject* parent = 0);
 
   template <typename Func>
   void reduce_range(int first, int last, float init, Func f);
@@ -28,11 +32,12 @@ class DataController : public QObject {
   void setup_connections();
   void on_watcher_result_ready();
 
-  std::unique_ptr<DataModel> data_model_;
+  std::unique_ptr<models::DataModel> data_model_;
 
   QFutureWatcher<void> result_watcher_;
   QFuture<float> result_;
 };
+}
 
 #include "datacontroller.inl"
 

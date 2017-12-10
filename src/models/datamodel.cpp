@@ -1,7 +1,8 @@
-#include "datamodel.h"
+#include <models/datamodel.h>
 
 #include <iostream>
 
+namespace models {
 ///////////////////////////////////////////////////////////////////////////////
 DataModel::DataModel(const std::vector<float>& raw_data, const uint32_t rows,
                      const uint32_t cols)
@@ -45,4 +46,5 @@ std::ostream& operator<<(std::ostream& os, const DataModel& data_model) {
   }
 
   return os;
+}
 }

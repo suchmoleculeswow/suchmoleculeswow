@@ -14,6 +14,7 @@ class DataModel;
 }
 
 namespace controllers {
+
 /*!
     \class DataController
     \brief Provides an interface to handle async operations on the data model.
@@ -30,11 +31,14 @@ namespace controllers {
 class DataController : public QObject {
   Q_OBJECT
  public:
+  template <typename C>
+  using RangeCommand = commands::Command<C>;
+
   DataController(std::unique_ptr<models::DataModel> data_model,
                  QObject* parent = 0);
 
-  template <typename Command>
-  void reduce_range(int first, int last);
+  template <typename C>
+  void reduce_range(RangeCommand<C> c, int first, int last);
 
   size_t size() const;
 

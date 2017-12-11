@@ -30,8 +30,9 @@ void MainWindow::on_lowerBoundSlider_changed(int value) {
 void MainWindow::on_upperBoundSlider_changed(int value) {
   ui->upperBoundCurVal->setText(QString::number(value));
 
-  data_controller_.reduce_range<commands::Add>(ui->lowerBoundSlider->value(),
-                                               value);
+  data_controller_.reduce_range(
+      controllers::DataController::RangeCommand<commands::Add>(),
+      ui->lowerBoundSlider->value(), value);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

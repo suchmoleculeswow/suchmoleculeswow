@@ -3,19 +3,21 @@
 
 #include <QtConcurrent/QtConcurrent>
 
+#include <commands/command.h>
 #include <models/datamodel.h>
 
 namespace controllers {
 ///////////////////////////////////////////////////////////////////////////////
-template <typename Command>
-void DataController::reduce_range(int first, int last) {
+template <typename C>
+void DataController::reduce_range(RangeCommand<C>, int first, int last) {
   auto worker = [=]() -> float {
 
-    models::DataModel::DataCIt range_first = data_model_->cbegin() + first;
-    models::DataModel::DataCIt range_last = data_model_->cbegin() + last;
+    auto range_first = data_model_->cbegin() + first;
+    auto range_last = data_model_->cbegin() + last;
 
-    return std::accumulate(range_first, range_last, Command::init_value(),
-                           Command::invoke);
+    return std::accumulate(range_first, range_last,
+                           RangeCommand<C>::init_value(),
+                           RangeCommand<C>::invoke);
   };
   result_ = QtConcurrent::run(worker);
   result_watcher_.setFuture(result_);
